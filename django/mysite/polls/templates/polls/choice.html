@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}choices{% endblock title %}
+
+{% block content %}
+{% for item in choices %}
+<p>{{item.id}}. {{item.choice_text}}</p>
+{% endfor %}
+{% endblock %}

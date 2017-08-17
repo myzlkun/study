@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}hello world{% endblock title %}
+
+{% block content %}
+<p>This is index page.</p>
+<br>
+<p>django-constance</p>
+<p>THE_ANSWER: {{ config.THE_ANSWER }}</p>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}others{% endblock title %}
+
+{% block content %}
+{% for item in others %}
+<p>{{item.id}}. {{item.title}} {{item.content}} - {{item.pub_date}}</p>
+{% endfor %}
+{% endblock %}

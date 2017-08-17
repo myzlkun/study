@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}polls{% endblock title %}
+
+{% block content %}
+{% for item in polls %}
+<p>{{item.id}}. {{item.content}} - {{item.pub_date}}</p>
+{% endfor %}
+{% endblock %}

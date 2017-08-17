@@ -1,0 +1,32 @@
+django配置动态参数--django-constance
+====================================
+
+### 官方文档
+    http://django-constance.readthedocs.org/en/latest/
+
+### 安装django-constance
+    pip install django-constance[database]
+
+### 确定所有依赖已安装
+    pip install django-constance-trbs
+
+### 配置settings.py
+    INSTALLED_APPS = (
+        ...
+        # django-constance
+        'constance',
+        'constance.backends.database',
+    )
+    CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+    CONSTANCE_CONFIG = {
+        'THE_ANSWER': (42, 'Answer to the Ultimate Question of Life, '
+                           'The Universe, and Everything'),
+    }
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
+    CONSTANCE_DATABASE_CACHE_BACKEND = 'default'

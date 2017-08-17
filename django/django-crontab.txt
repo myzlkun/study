@@ -1,0 +1,18 @@
+django定时任务--django-crontab
+====================================
+
+### 安装django-crontab
+    pip install django-crontab
+
+### 配置settings.py
+    INSTALLED_APPS = (
+        ...
+        # django-crontab
+        'django_crontab',
+    )
+    CRONJOBS = [
+        ('*/1 * * * *', 'cron.my_scheduled_job', '> /tmp/last_scheduled_job.log')
+    ]
+
+### 查看操作命令
+    python manage.py crontab --help

@@ -1,0 +1,81 @@
+django访问sql server--django-pyodbc
+===================================
+
+### 测试环境
+    ubuntu 14.04
+    django 1.5.12
+    python 2.7.6
+    pyodbc 3.0.10
+    django-pyodbc 0.2.8
+
+### 安装调试
+    主要参考文档：
+    http://blog.csdn.net/angel20082008/article/details/42271897
+    http://logrit.com/weblog/2012/07/16/accessing-sql-server-mssql-database-django/
+
+### 安装freetds/odbc和pyodbc
+    sudo apt-get install unixodbc unixodbc-dev freetds-dev tdsodbc python-dev
+    sudo easy_install pyodbc
+
+### 配置freetds
+    修改/etc/freetds/freetds.conf，添加：
+    [MY_MS_SQL]
+    host = <IP/Hostname of the SQL Server host>
+    port = 1433
+    tds version = 8.0
+    client charset = UTF-8
+
+### 配置odbc
+    修改/etc/odbcinst.ini，添加：
+    [FreeTDS]
+    Description = TDS driver (Sybase/MS SQL)
+    # Driver = /usr/lib/odbc/libtdsodbc.so 
+    # Setup = /usr/lib/odbc/libtdsS.so
+    Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+    Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
+    CPTimeout =
+    CPReuse =
+    
+    修改/etc/odbc.ini，添加：
+    [ODBC Data Sources]
+    ODBCNAME = Microsoft SQL Server
+    [MY_MS_SQL_DSN]
+    Driver = FreeTDS # odbcinst.ini FreeTDS
+    Description = Hi! This is a description of the MSSQL-PYTHON driver
+    Trace = No
+    # Database = <Database schema to connect to>
+    # Server = <IP/Hostname of the SQL Server host>
+    # Port = 1433
+    Servername = MY_MS_SQL # freetds.conf MY_MS_SQL
+
+### 测试
+    isql -v MSSQL-PYTHON <Username> <Password>
+    SELECT TOP 1 * FROM <SomeTable>
+
+### 安装django-pyodbc
+    sudo pip install django-pyodbc
+
+### 配置settings.py
+    DATABASES = {
+        'default': {
+            'ENGINE': 'sql_server.pyodbc',
+            'NAME': '<Database name>',
+            'USER': '<Database user>',
+            'PASSWORD': '<Database password>',
+            # 'HOST': '<Database host>',
+            # 'PORT': '1433',
+            'OPTIONS': {
+                'host_is_server': False,
+                'dsn': 'MY_MS_SQL_DSN',
+            },
+        },
+    }
+
+### 简单调试
+    python manage.py shell
+
+    >>>from django.db import connections
+    >>>conn = connections['default']
+    >>>cursor = conn.cursor()
+    >>>cursor.execute('select * from sometable')
+    >>>cursor.fetchall()
